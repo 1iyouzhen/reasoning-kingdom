@@ -49,6 +49,7 @@ export default defineConfig({
           { text: '第7章：复杂度的真相：不是快慢，是结构', link: '/chapter7/' },
           { text: '第8章：启发式的契约：接受"差不多对"需要多少勇气', link: '/chapter8/' },
           { text: '第9章：Transformer：动态拓扑的注意力革命', link: '/chapter9/' },
+          { text: '↳ 番外篇：注意力即因果', link: '/chapter9/bonus' },
           { text: '第10章：搜索的艺术：在推理空间中巡航', link: '/chapter10/' },
           { text: '第11章：效能化推理：算法的经济学', link: '/chapter11/' },
           { text: '第12章：隐式推理：神经网络的内部独白', link: '/chapter12/' },
