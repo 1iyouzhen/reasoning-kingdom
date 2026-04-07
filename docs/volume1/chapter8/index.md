@@ -818,7 +818,7 @@ Landauer原理给出了理论下界:擦除1比特信息至少需要$k_B T \ln 2$
 
 - \[Zixi Li, 2026a\] — ADS自适应双搜索,启发式的信息论化,知识蒸馏框架
 
-- \[Zixi Li, 2026b\] — Collins随机化优化器,确定性下界与Chernoff上界,c_opt ≈ 34的相变
+- \[Zixi Li, 2026b\] — Collins随机化优化器,确定性下界与Chernoff上界,$c_{\text{opt}} \approx 34$的相变
 
 - \[Li & Jin, 2015\] — 加权单位圆盘覆盖的PTAS,近似算法的黄金标准 `→ [arXiv:1502.04918]`
 
