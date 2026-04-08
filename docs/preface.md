@@ -132,6 +132,18 @@ $$A_{ij} = \mathrm{tr}(\mathcal{C}_{ij}) = q_i \cdot k_j$$
 
 ---
 
+**6. CocDo：神经 do 算子——把 Pearl 因果演算实现为 λ 演算**
+
+第18章把 $\mathsf{do}(X = v)$ 定义为"删除入边、传播效应"。CocDo 把这个定义变成可运行的代码：每条因果边编码为 COC 依赖 Pi 类型（要求层级严格递增，使循环在类型层面不可表达），$\mathsf{do}$ 算子实现为捕获避免替换加 β-归约，梯度规划把"找最优干预值"变成对能量函数的 Adam 优化。
+
+$$v^* = \arg\min_v \sum_j \left(\|E_{\text{next}}[j]\| - y^*_j\right)^2$$
+
+CausalSearch 把推理王国自身的章节作为因果知识图谱，用 Pearl 三步法（溯因→行动→预测）做检索，持续发现向量 RAG 遗漏的跨章因果链。
+
+`→ [github.com/lizixi-0x2F/CocDo](https://github.com/lizixi-0x2F/CocDo)` &nbsp; `→ [第23章：因果推断的实现](/volume2/chapter23/)`
+
+---
+
 ## 你会看到什么
 
 本书分为上下两卷，逻辑上互为镜像：上卷给直觉，下卷给基础。可以独立阅读，合在一起才是全貌。
@@ -186,6 +198,8 @@ $$A_{ij} = \mathrm{tr}(\mathcal{C}_{ij}) = q_i \cdot k_j$$
 第21章把学习看作逆推断：给定观测到的定理，反推最简洁的公理集合。泛化是压缩的另一种说法，奥卡姆剃刀是信息论定理，不是哲学建议。
 
 第22章是终点，也是开口：当推理系统足够强大，它开始推理关于自身的命题。Curry-Howard 对应、不动点定理——这是目前没有答案的地方，也是值得继续走下去的地方。
+
+第23章是一次落地：把第18章的 do-calculus 实现为可运行的神经 SCM。COC 类型论让循环成为类型错误，$\mathsf{do}$ 算子实现为 λ 演算的项替换，NOTEARS 把 DAG 约束变成连续优化，梯度规划把"找最优干预"变成 Adam 下降。这是李籽溪（兔狲教授）的原创工作 [CocDo](https://github.com/lizixi-0x2F/CocDo)。
 
 ---
 

@@ -132,6 +132,57 @@ $$P(Y \mid X = x) \quad \text{vs.} \quad P(Y \mid \mathsf{do}(X = x))$$
 随机对照实验（RCT）的核心操作，在数学上正是 $\mathsf{do}$：把受试者随机分配到处理组和对照组，切断了处理变量（服药/不服药）和所有可能混淆因素之间的联系。随机化等价于在因果图里删除指向处理变量的所有边。这就是为什么 RCT 是估计因果效应的"黄金标准"——它在物理上实现了 do 算子。do-calculus 的价值在于：它告诉你在不做实验的情况下，什么时候可以从观测数据里计算出 $P(Y \mid \mathsf{do}(X))$。
 :::
 
+::: details 可运行的 do 算子：CocDo 实现
+
+do 算子不只是数学符号——它可以被精确地实现为 λ 演算的**项替换加 β-归约**。
+
+[CocDo](https://github.com/lizixi-0x2F/CocDo) 把每个因果变量编码为 COC 类型论中的一个节点，每条边 $X \to Y$ 编码为依赖 Pi 类型 $\Pi(X : \text{Type}_i).\, \text{Type}_j$（要求 $i < j$，使循环在类型层面不可表达）。
+
+`do(X = v)` 的实现只有两步：
+
+```python
+# 1. 把变量 X 替换为常数 v（切断所有入边）
+intervened = subst(mechanism, var="X", replacement=Const("X", v))
+
+# 2. β-归约：沿拓扑序传播效应
+result = beta_reduce(intervened)
+```
+
+`subst` 是捕获避免替换（capture-avoiding substitution）；`beta_reduce` 是按值调用归约到不动点。当 `Add`/`Mul` 的两个操作数都是带值的 `Const` 时，归约器直接计算张量运算：
+
+```
+App(App(Mul, Const(w)), Const(v))  →  Const(w · v)
+```
+
+这意味着结构方程 $E_j = \sum_i A_{ij} \cdot E_i + U_j$ 的整个传播过程，发生在 COC 项语言内部，而不是一次独立的矩阵乘法。
+
+**与 Pearl 定义的对应：**
+
+| Pearl 的 do 算子 | CocDo 实现 |
+|----------------|-----------|
+| 把 $X$ 的结构方程替换为 $X = v$ | `subst(mechanism, "X", Const("X", v))` |
+| 删除所有指向 $X$ 的边 | 替换后 $X$ 的父节点项消失 |
+| 沿后代传播效应 | `beta_reduce` 按拓扑序归约 |
+| 循环图是非法的 | Pi 类型要求 $i < j$，循环是 `TypeError` |
+
+```python
+from cocdo import NeuralSCM
+import numpy as np
+
+# 三节点图：ad_spend → clicks → revenue
+A = np.array([[0, 0.9, 0.8],
+              [0,   0, 0.7],
+              [0,   0,   0]])
+E = np.random.randn(3, 16)
+scm = NeuralSCM.from_embeddings(["ad_spend", "clicks", "revenue"], A, E)
+
+# do(ad_spend = 3.0)：切断 ad_spend 的入边，传播效应
+state, E_next = scm.step({"ad_spend": 3.0})
+print(state)  # {"ad_spend": 3.0, "clicks": ..., "revenue": ...}
+```
+
+:::
+
 ---
 
 ## 18.5 后门准则：混淆的几何
