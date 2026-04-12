@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitepress'
+import container from 'markdown-it-container'
 // https://vitepress.dev/reference/site-config
 
 const isEdgeOne = process.env.EDGEONE === '1'
@@ -10,7 +11,93 @@ export default defineConfig({
   description: "一本关于AI推理机制的开源教程",
   base: baseConfig,
   markdown: {
-    math: true
+    math: true,
+    config: (md) => {
+      // 添加自定义容器支持
+      md.use(container, 'detail', {
+        validate: function(params) {
+          return params.trim().match(/^detail\s+(.*)$/)
+        },
+        render: function (tokens, idx) {
+          const m = tokens[idx].info.trim().match(/^detail\s+(.*)$/)
+          if (tokens[idx].nesting === 1) {
+            //  opening tag
+            return '<details><summary>' + md.utils.escapeHtml(m[1]) + '</summary>\n'
+          } else {
+            // closing tag
+            return '</details>\n'
+          }
+        }
+      })
+      
+      // 添加info容器支持
+      md.use(container, 'info', {
+        validate: function(params) {
+          return params.trim().match(/^info\s*(.*)$/)
+        },
+        render: function (tokens, idx) {
+          const m = tokens[idx].info.trim().match(/^info\s*(.*)$/)
+          if (tokens[idx].nesting === 1) {
+            // opening tag
+            return '<div class="custom-container info">\n'
+          } else {
+            // closing tag
+            return '</div>\n'
+          }
+        }
+      })
+      
+      // 添加tip容器支持
+      md.use(container, 'tip', {
+        validate: function(params) {
+          return params.trim().match(/^tip\s*(.*)$/)
+        },
+        render: function (tokens, idx) {
+          const m = tokens[idx].info.trim().match(/^tip\s*(.*)$/)
+          if (tokens[idx].nesting === 1) {
+            // opening tag
+            return '<div class="custom-container tip">\n'
+          } else {
+            // closing tag
+            return '</div>\n'
+          }
+        }
+      })
+      
+      // 添加warning容器支持
+      md.use(container, 'warning', {
+        validate: function(params) {
+          return params.trim().match(/^warning\s*(.*)$/)
+        },
+        render: function (tokens, idx) {
+          const m = tokens[idx].info.trim().match(/^warning\s*(.*)$/)
+          if (tokens[idx].nesting === 1) {
+            // opening tag
+            return '<div class="custom-container warning">\n'
+          } else {
+            // closing tag
+            return '</div>\n'
+          }
+        }
+      })
+      
+      // 添加danger容器支持
+      md.use(container, 'danger', {
+        validate: function(params) {
+          return params.trim().match(/^danger\s*(.*)$/)
+        },
+        render: function (tokens, idx) {
+          const m = tokens[idx].info.trim().match(/^danger\s*(.*)$/)
+          if (tokens[idx].nesting === 1) {
+            // opening tag
+            return '<div class="custom-container danger">\n'
+          } else {
+            // closing tag
+            return '</div>\n'
+          }
+        }
+      })
+    }
   },
   themeConfig: {
     logo: '/datawhale-logo.png',
