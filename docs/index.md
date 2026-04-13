@@ -34,16 +34,6 @@ features:
     details: 全部内容开源，源文件托管在 GitHub，欢迎贡献与反馈
 ---
 
-<div style="display: flex; justify-content: center; align-items: center; gap: 40px; margin: 40px 0; flex-wrap: wrap;">
-  <div style="text-align: center;">
-    <img src="/ReasoningKingdom.png" alt="推理王国主封面" style="max-width: 300px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-    <p style="margin-top: 10px; font-weight: bold; color: var(--vp-c-text-1);">推理王国三部曲</p>
-  </div>
-  <div style="text-align: center;">
-    <img src="/cover_minimal_letters.svg" alt="前传：致未来的推理科学家" style="max-width: 300px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-    <p style="margin-top: 10px; font-weight: bold; color: var(--vp-c-text-1);">前传：推理科学入门</p>
-  </div>
-</div>
 
 <script setup>
 import { VPTeamMembers } from 'vitepress/theme'
