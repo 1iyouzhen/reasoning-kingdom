@@ -165,6 +165,7 @@ export default defineConfig({
             { text: '第21章：学习作为逆推断——泛化是压缩的另一种说法', link: '/volume2/chapter21/' },
             { text: '第22章：自指与涌现——当推理系统开始推理关于自身', link: '/volume2/chapter22/' },
             { text: '第23章：永霖-李雅普诺夫联立——推理系统的稳定性与收敛边界', link: '/volume2/chapter23/' },
+            { text: '第24章：范畴论眼中的推理收敛——链表、指针与伴随函子', link: '/volume2/chapter24/' },
             { text: '兔狲教授小词典', link: '/dictionary' },
             { text: '附录：下卷思考题参考提示', link: '/appendix-thinking-questions' },
           ]

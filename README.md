@@ -140,7 +140,7 @@
 | &nbsp;&nbsp;↳ [番外：暗线](https://datawhalechina.github.io/reasoning-kingdom/volume1/chapter13/bonus) | 上卷十三章的隐藏因果逻辑链 | ✅ |
 | [因果推理番外：从理论到代码 -- 神经因果算子的实现](https://datawhalechina.github.io/reasoning-kingdom/volume1/chapterbonous/) | CocDo 神经因果算子——上卷理论的可运行实现 | ✅ |
 
-### 下卷：《推理的形式化重建》（10章 + 附录）
+### 下卷：《推理的形式化重建》（11章 + 附录）
 
 | 章节 | 核心问题 | 状态 |
 | :---- | :---- | :----: |
@@ -155,6 +155,7 @@
 | [第21章：学习作为逆推断](https://datawhalechina.github.io/reasoning-kingdom/volume2/chapter21/) | 模型"学到了东西"的形式含义：它找到了更短的描述 | ✅ |
 | [第22章：自指与涌现](https://datawhalechina.github.io/reasoning-kingdom/volume2/chapter22/) | Curry-Howard 对应告诉我们：证明即程序。那么，程序在证明什么？ | ✅ |
 | [第23章：推理系统的稳定性](https://datawhalechina.github.io/reasoning-kingdom/volume2/chapter23/) | 从永霖收敛推导李雅普诺夫函数：推理系统的能量函数如何从行为中浮现 | ✅ |
+| [第24章：范畴论眼中的推理收敛](https://datawhalechina.github.io/reasoning-kingdom/volume2/chapter24/) | 用范畴论解释推理收敛的结构必然性：幽灵指针对应终结对象，伴随函子缺失导致元层断裂 | ✅ |
 | [附录：下卷思考题参考提示](https://datawhalechina.github.io/reasoning-kingdom/appendix-thinking-questions) | 下卷各章思考题的思考脚手架与关键点提示 | ✅ |
 
 ### 兔狲教授小词典
