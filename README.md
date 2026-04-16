@@ -4,6 +4,16 @@
   <img src="docs/public/ReasoningKingdom.png" alt="推理王国" width="400">
 </div>
 
+<div align="center">
+
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/datawhalechina/reasoning-kingdom)
+[![GitHub stars](https://img.shields.io/github/stars/datawhalechina/reasoning-kingdom?style=flat-square)](https://github.com/datawhalechina/reasoning-kingdom/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/datawhalechina/reasoning-kingdom?style=flat-square)](https://github.com/datawhalechina/reasoning-kingdom/issues)
+[![GitHub license](https://img.shields.io/github/license/datawhalechina/reasoning-kingdom?style=flat-square)](https://github.com/datawhalechina/reasoning-kingdom/blob/main/LICENSE)
+[![GitHub Actions](https://img.shields.io/github/actions/workflow/status/datawhalechina/reasoning-kingdom/deploy.yml?style=flat-square)](https://github.com/datawhalechina/reasoning-kingdom/actions/workflows/deploy.yml)
+
+</div>
+
 > [!CAUTION]
 > Alpha 内测版本：内容仍在迭代中，欢迎提 Issue 反馈问题或建议。
 
@@ -208,13 +218,6 @@ npm run docs:build
 ```bash
 npm run docs:preview
 ```
-
-## 加入内测群
-
-<div align=center>
-<p>扫描下方二维码加入推理王国内测群（7天内有效，过期请联系作者更新）</p>
-<img src="QR.jpg" width="200">
-</div>
 
 ## 关注我们
 
