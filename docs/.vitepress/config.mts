@@ -13,6 +13,11 @@ export default defineConfig({
   appearance: false, // 禁用深色模式
   markdown: {
     math: true,
+    // 彻底禁用Vue语法解析
+    vue: {
+      // 禁用所有Vue特性
+      enabled: false
+    },
     config: (md) => {
       // 复制前传的容器配置
       md.use(container, 'info', {
