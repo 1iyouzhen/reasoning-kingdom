@@ -1148,6 +1148,42 @@ $$\eta_t = \frac{\eta_0}{1 + \alpha(B_t)}, \quad \alpha(B_t) = -\log(1 - B_t)$$
 | **熵感知（ADS）** | **当前信念熵** | **局部可采纳步长条件** |
 :::
 
+:::details PyTorch 实现：EntropyAwareLR
+```python
+import torch
+from torch.optim.lr_scheduler import LRScheduler
+
+class EntropyAwareLR(LRScheduler):
+    """
+    熵感知学习率调度器。
+    eta_t = eta_0 / (1 + alpha(B_t))
+    alpha(B_t) = -log(1 - B_t),  B_t = H(p_t) / H_max
+
+    用法：
+        scheduler = EntropyAwareLR(optimizer, n_classes=vocab_size)
+        # 每步推理后：
+        scheduler.step(logits)   # logits: (batch, n_classes)
+    """
+    def __init__(self, optimizer, n_classes: int, last_epoch=-1):
+        self.n_classes = n_classes
+        self.H_max = torch.log(torch.tensor(float(n_classes)))
+        self._alpha = 0.0
+        super().__init__(optimizer, last_epoch)
+
+    def step(self, logits: torch.Tensor = None):
+        if logits is not None:
+            with torch.no_grad():
+                p = torch.softmax(logits.float(), dim=-1).mean(0)
+                H = -(p * torch.log(p + 1e-10)).sum()
+                B = (H / self.H_max).clamp(0.0, 1.0 - 1e-6)
+                self._alpha = float(-torch.log(1 - B))
+        super().step()
+
+    def get_lr(self):
+        return [base_lr / (1.0 + self._alpha) for base_lr in self.base_lrs]
+```
+:::
+
 :::details 完整实验代码
 ```python
 import numpy as np
