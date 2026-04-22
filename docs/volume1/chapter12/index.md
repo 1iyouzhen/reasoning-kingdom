@@ -1133,7 +1133,7 @@ $$\eta_t = \frac{\eta_{\text{base}}}{1 + \alpha(H(p_t))}$$
 
 **实验设置**：$n=4$ 类分类，锚点 $A$ 为随机 softmax 分布，真实答案 $A^* = (1,0,0,0)$，初始信念随机，共 60 步。
 
-![ADS × Yonglin Limit 实验结果](/ads_yonglin_demo.png)
+![ADS × Yonglin Limit 实验结果](/figures/ch12_ads_yonglin_demo.png)
 
 **四个子图的读法**：
 
@@ -1263,7 +1263,7 @@ def run(n_classes=4, steps=60, eta_base=0.08, seed=42):
 
 **实验设置**：词表 $C=8$，序列长 $T=16$，$d_{\text{model}}=32$，batch=32，共 300 步。三种调度器从**相同初始有效步长** $\eta_{\text{target}}=0.02$ 出发，公平对比。
 
-![Tiny GPT 消融：熵感知 vs 固定 vs 余弦退火](/entropy_lr_gpt_ablation.png)
+![Tiny GPT 消融：熵感知 vs 固定 vs 余弦退火](/figures/ch12_entropy_lr_gpt_ablation.png)
 
 **结果**（300步后）：
 
