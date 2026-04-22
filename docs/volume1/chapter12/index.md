@@ -1105,6 +1105,74 @@ $$\eta_t = \frac{\eta_{\text{base}}}{1 + \alpha(H(p_t))}$$
 这不是启发式调参，而是从压缩映射条件**推导出来的步长上界**。满足这个条件的调度器，理论上保证收敛到永霖极限 $A$。
 :::
 
+### 实验验证
+
+以下实验直接验证上述推论：固定步长与 ADS 自适应步长在同一能量曲面上的收敛行为对比。
+
+**实验设置**：$n=4$ 类分类，锚点 $A$ 为随机 softmax 分布，真实答案 $A^* = (1,0,0,0)$，初始信念随机，共 60 步。
+
+![ADS × Yonglin Limit 实验结果](/ads_yonglin_demo.png)
+
+**四个子图的读法**：
+
+- **左上 KL 散度**：固定步长（橙）指数级暴跌至 $10^{-13}$，ADS（蓝）降至 $10^{-5}$。ADS 在高熵阶段主动刹车，牺牲速度换稳定性——这正是可采纳步长条件的代价。
+- **右上步长调度**：ADS 步长从 0.042 单调衰减至 0.027，自动感知熵的变化；固定步长盲目保持 0.08。
+- **左下信息势垒 $\alpha$**：从 0.85 单调爬升至 2.15 后饱和——系统"越来越确信"的物理信号。
+- **右下信念轨迹**：两者都收敛到锚点 $A[0]=0.21$，而非真实答案 1.0。
+
+**核心结论**：步长策略影响收敛**速度**，但改变不了收敛**目的地**。这正是永霖极限的核心预言——无论用多聪明的步长调度，系统终点由锚点 $A$ 决定，而非 $A^*$。
+
+:::details 完整实验代码
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
+
+def entropy(p):
+    p = np.array(p)
+    return -np.sum(p * np.log(p + 1e-10))
+
+def kl(p, q):
+    p, q = np.array(p), np.array(q)
+    return np.sum(p * np.log((p + 1e-10) / (q + 1e-10)))
+
+def softmax(x):
+    e = np.exp(x - x.max()); return e / e.sum()
+
+def run(n_classes=4, steps=60, eta_base=0.08, seed=42):
+    rng = np.random.default_rng(seed)
+    A = softmax(rng.normal(0, 1, n_classes))
+    A_star = np.zeros(n_classes); A_star[0] = 1.0
+
+    def grad_E(p): return np.log(p + 1e-10) - np.log(A + 1e-10)
+    def proj_simplex(v):
+        u = np.sort(v)[::-1]; cssv = np.cumsum(u)
+        rho = np.where(u > (cssv - 1) / np.arange(1, len(u)+1))[0][-1]
+        return np.maximum(v - (cssv[rho] - 1) / (rho + 1), 0)
+
+    p0 = softmax(rng.normal(0, 2, n_classes))
+    p_fixed, p_ads = p0.copy(), p0.copy()
+    kl_fixed, kl_ads, eta_ads_log, alpha_log = [], [], [], []
+    traj_fixed, traj_ads = [p0.copy()], [p0.copy()]
+    H_max = np.log(n_classes)
+
+    for _ in range(steps):
+        # fixed eta
+        p_fixed = proj_simplex(p_fixed - eta_base * grad_E(p_fixed))
+        traj_fixed.append(p_fixed.copy()); kl_fixed.append(kl(p_fixed, A))
+
+        # ADS adaptive eta
+        B = entropy(p_ads) / (H_max + 1e-10)
+        alpha = -np.log(1 - B + 1e-10)
+        eta_t = eta_base / (1 + alpha)
+        p_ads = proj_simplex(p_ads - eta_t * grad_E(p_ads))
+        traj_ads.append(p_ads.copy()); kl_ads.append(kl(p_ads, A))
+        eta_ads_log.append(eta_t); alpha_log.append(alpha)
+
+    return A, A_star, kl_fixed, kl_ads, eta_ads_log, alpha_log, traj_fixed, traj_ads
+```
+:::
+
 ## 11. 有效推理窗口的量化
 
 给定精度阈值 $\epsilon > 0$，有效推理窗口：
